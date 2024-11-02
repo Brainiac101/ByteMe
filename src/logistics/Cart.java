@@ -24,6 +24,12 @@ public final class Cart {
         orders = new ArrayList<>();
     }
 
+    public Cart(Customer user, List<Order> orders) {
+        this.user = user;
+        items = new HashMap<>();
+        this.orders = orders;
+    }
+
     public void setPaid(boolean paid) {
         isPaid = paid;
     }
@@ -46,6 +52,7 @@ public final class Cart {
             ItemList.updateItem(item);
             this.items.put(item, quantity);
             this.price += item.getPrice() * quantity;
+            System.out.println("Item added to the cart\n");
         } else if (quantity < 0) System.out.println("Please enter valid quantity (must be greater than zero)");
         else System.out.println("Entered quantity exceeds count in Inventory");
     }
@@ -67,7 +74,7 @@ public final class Cart {
 
     public void cancelOrder() {
         Order order = getLastOrder();
-        if (order.getStatus() != Status.Delivered && order.getStatus() != Status.OrderReceived && order.getStatus() != Status.Preparing) {
+        if (order.getStatus() != Status.Delivered && order.getStatus() != Status.OrderReceived) {
             System.out.println("Order cancellation not possible");
             return;
         }
@@ -77,6 +84,7 @@ public final class Cart {
         }
         orders.remove(order);
         order.setStatus(Status.Cancelled);
+        OrderList.removeOrder(order.getId());
         if (order.isPaid()) DeniedOrders.addDeniedOrder(order);
         System.out.println("Order Cancelled");
     }
@@ -123,8 +131,9 @@ public final class Cart {
     @Override
     public String toString() {
         StringBuilder temp = new StringBuilder();
-        for (Item item : items.keySet())
-            temp.append(item.toString()).append("\n").append("Quantity: ").append(items.get(item)).append("\n");
-        return "Item List:\n" + temp + "Requests: " + this.request + "\nOrder value: " + this.price + "\n";
+        for(Item item : items.keySet()){
+            temp.append("Name: ").append(item.getName()).append("\nPrice: ").append(item.getPrice()).append("\nCategory: ").append(item.getCategory()).append("\nQuantity: ").append(items.get(item)).append("\n");
+        }
+        return "Item List:\n" + temp + "\nRequests: " + this.request + "\nOrder Value: " + this.price;
     }
 }

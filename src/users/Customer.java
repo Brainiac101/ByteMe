@@ -6,7 +6,7 @@ import logistics.*;
 import java.util.List;
 
 public class Customer extends User {
-    protected final Cart cart;
+    protected Cart cart;
     protected String address;
 
     public Customer(String username, String password, String address) {
@@ -73,7 +73,6 @@ public class Customer extends User {
         Item item = ItemList.getItemByName(name);
         if (item != null) {
             cart.addItem(item, quantity);
-            System.out.println("Item added to the cart\n");
         }
         else System.out.println("No item with name " + name + " found\n");
     }
@@ -117,6 +116,7 @@ public class Customer extends User {
         this.cart.setAddress(address);
         this.cart.setPaid(isPaid);
         this.cart.placeOrder(false);
+        cart = new Cart(this, cart.getOrders());
     }
 
     public void viewStatus() {
@@ -134,27 +134,33 @@ public class Customer extends User {
 
     public void viewOrderHistory() {
         if(this.cart.getOrders().isEmpty()) System.out.println("No orders found\n");
+        int i = 1;
         for (Order o : this.cart.getOrders()) {
-            System.out.println(o);
+            System.out.println(i + ". " +o);
+            i++;
             System.out.println();
         }
     }
 
     public void repeatOrder(int index) {
-        this.cart.placeOrder(false, index);
+        this.cart.placeOrder(false, index - 1);
     }
 
     public void submitReview(String itemName, String review){
         Item item = ItemList.getItemByName(itemName);
-        if(item != null && cart.hasBoughtItem(item)) item.addReview(review);
-        else System.out.println("No item with name " + itemName + " found");
+        if(item != null && cart.hasBoughtItem(item)) {
+            item.addReview(review);
+            System.out.println("Review Added\n");
+        }
+        else System.out.println("No item with name " + itemName + " found\n");
     }
 
     public void viewReviews(String itemName) {
         Item item = ItemList.getItemByName(itemName);
         if(item != null) {
             for (String s : item.getReviews()) System.out.println("• " + s);
+            System.out.println();
         }
-        else System.out.println("No item with name " + itemName + " found");
+        else System.out.println("No item with name " + itemName + " found\n");
     }
 }

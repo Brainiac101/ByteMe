@@ -40,7 +40,10 @@ public final class Admin extends User{
             System.out.println("Item not found\n");
             return;
         }
-        for(Order o: OrderList.getPendingOrders()) o.setStatus(Status.Denied);
+        for(Order o: OrderList.getPendingOrders()) {
+            o.setStatus(Status.Denied);
+            OrderList.updateOrder(o);
+        }
         ItemList.removeItem(item);
         System.out.println("Item removed\n");
     }
@@ -53,15 +56,17 @@ public final class Admin extends User{
     }
 
     public void updateOrderStatus(int id, Status status){
-        Order temp = OrderList.removeOrder(id);
+        Order temp = OrderList.getOrder(id);
         if(temp != null ) {
             temp.setStatus(status);
             if(temp.getStatus() == Status.Delivered) CompletedOrders.addCompletedOrder(temp);
-            else if(temp.getStatus() == Status.Denied) DeniedOrders.addDeniedOrder(temp);
-            else OrderList.addOrder(temp);
-
+            else if(temp.getStatus() == Status.Denied) {
+                if(temp.isPaid()) DeniedOrders.addDeniedOrder(temp);
+            }
+            else OrderList.updateOrder(temp);
             System.out.println("Order Status updated\n");
         }
+        else System.out.println("Order not found\n");
     }
 
     public void getReport(){

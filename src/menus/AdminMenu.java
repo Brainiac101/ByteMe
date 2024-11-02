@@ -1,5 +1,6 @@
 package menus;
 
+import database.CompletedOrders;
 import database.DeniedOrders;
 import database.ItemList;
 import logistics.Category;
@@ -29,7 +30,10 @@ public class AdminMenu extends Menu {
 
     private void processRefunds() {
         int choice;
-        for (Order o : DeniedOrders.getDeniedOrders()) {
+
+        for (int i = 0; i < DeniedOrders.getDeniedOrders().size(); i++) {
+            Order o = DeniedOrders.getDeniedOrders().get(i);
+            System.out.println(o);
             System.out.println("• 1 for giving the refund");
             System.out.println("• 2 for pausing the refund for this order");
             System.out.println("• 0 to return to menu");
@@ -48,30 +52,25 @@ public class AdminMenu extends Menu {
                     return;
             }
         }
+        System.out.println("Refunds resolved\n");
     }
 
     private Status inputStatus() {
-        System.out.println("• 1 for Cancelled");
-        System.out.println("• 2 for Denied");
-        System.out.println("• 3 for Delivered");
-        System.out.println("• 4 for Out for Delivery");
-        System.out.println("• 5 for Preparing");
-        System.out.println("• 6 for Order Received");
+        System.out.println("• 1 for Delivered");
+        System.out.println("• 2 for Out for Delivery");
+        System.out.println("• 3 for Preparing");
+        System.out.println("• 4 for Order Received");
         System.out.println("• 0 to return to menu");
         int choice = sc.nextInt();
         sc.nextLine();
         switch (choice) {
             case 1:
-                return Status.Cancelled;
-            case 2:
-                return Status.Denied;
-            case 3:
                 return Status.Delivered;
-            case 4:
+            case 2:
                 return Status.OutForDelivery;
-            case 5:
+            case 3:
                 return Status.Preparing;
-            case 6:
+            case 4:
                 return Status.OrderReceived;
             case 0:
                 return null;

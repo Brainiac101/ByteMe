@@ -5,20 +5,17 @@ import logistics.Status;
 
 import java.util.*;
 
-final class orderComparer implements Comparator<Order> {
+class OrderComparator implements Comparator<Order> {
     @Override
     public int compare(Order o1, Order o2) {
-        int temp = o1.getPriority() - o2.getPriority();
-        if (temp == -1 || temp == 0) {
-            return o1.getId() - o2.getId();
-        } else {
-            return 1;
-        }
+        if (o1.getPriority() != o2.getPriority()) return Integer.compare(o2.getPriority(), o1.getPriority());
+        return Integer.compare(o1.getId(), o2.getId());
     }
 }
 
 public final class OrderList {
-    private static final PriorityQueue<Order> orderList = new PriorityQueue<>(new orderComparer());
+    private static final PriorityQueue<Order> orderList = new PriorityQueue<>(new OrderComparator());
+    private static int ctr = 0;
 
     public static Order addOrder(Order order) {
         if(order.getStatus() == Status.Delivered){
@@ -26,17 +23,31 @@ public final class OrderList {
             orderList.remove(order);
             return null;
         }
-        order.setId(orderList.size() + 1);
+        order.setId(++ctr);
         orderList.offer(order);
         return order;
     }
 
-    public static int getLength() {
-        return orderList.size();
+    public static Order getOrder(int id){
+        for(Order order : orderList){
+            if(order.getId() == id){
+                return order;
+            }
+        }
+        return null;
     }
 
-    public static Order getTopOrder() {
-        return orderList.poll();
+    public static void updateOrder(Order order) {
+        for(Order o : orderList) {
+            if(o.getId() == order.getId()) {
+                orderList.remove(o);
+                if(o.getStatus() == Status.Delivered) CompletedOrders.addCompletedOrder(order);
+                else if (o.getStatus() == Status.Denied || Status.Cancelled == o.getStatus()) {
+                    if (o.isPaid()) DeniedOrders.addDeniedOrder(order);
+                }
+                else orderList.add(order);
+            }
+        }
     }
 
     public static Order removeOrder(int id) {

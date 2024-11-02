@@ -67,7 +67,9 @@ public class Menu {
         String password = sc.nextLine();
         switch (choice) {
             case 1:
-                if (CustomerList.getCustomer(username) != null) return CustomerList.getCustomer(username);
+                if (CustomerList.getCustomer(username) != null) {
+                    if (CustomerList.getCustomer(username).getPassword().equals(password)) return CustomerList.getCustomer(username);
+                }
             case 2:
                 if (username.equals("admin") && password.equals("admin")) return new Admin("admin", "admin");
             default:
