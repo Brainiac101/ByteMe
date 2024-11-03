@@ -3,6 +3,7 @@ package menus;
 import database.CustomerList;
 import users.*;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -11,31 +12,38 @@ public class Menu {
     public void mainMenu() {
         int choice;
         while (true) {
-            System.out.println("Welcome to ByteMe!");
-            System.out.println("• 1 for Signing Up");
-            System.out.println("• 2 for Logging In");
-            System.out.println("• 0 for Exit");
-            choice = sc.nextInt();
-            sc.nextLine();
-            switch (choice) {
-                case 1:
-                    signUp();
-                    break;
-                case 2:
-                    User temp = login();
-                    if (temp == null) continue;
-                    else if (temp instanceof VIP) {
-                        VIPMenu menu = new VIPMenu((VIP) temp);
-                        menu.mainMenu();
-                    } else if (temp instanceof Customer) {CustomerMenu menu = new CustomerMenu((Customer) temp);
-                        menu.mainMenu();
-                    } else if (temp instanceof Admin) {
-                        AdminMenu menu = new AdminMenu((Admin) temp);
-                        menu.mainMenu();
-                    }
-                    break;
-                case 0:
-                    exit();
+            try {
+                System.out.println("Welcome to ByteMe!");
+                System.out.println("• 1 for Signing Up");
+                System.out.println("• 2 for Logging In");
+                System.out.println("• 0 for Exit");
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        signUp();
+                        break;
+                    case 2:
+                        User temp = login();
+                        if (temp == null) continue;
+                        else if (temp instanceof VIP) {
+                            VIPMenu menu = new VIPMenu((VIP) temp);
+                            menu.mainMenu();
+                        } else if (temp instanceof Customer) {
+                            CustomerMenu menu = new CustomerMenu((Customer) temp);
+                            menu.mainMenu();
+                        } else if (temp instanceof Admin) {
+                            AdminMenu menu = new AdminMenu((Admin) temp);
+                            menu.mainMenu();
+                        }
+                        break;
+                    case 0:
+                        exit();
+                    default:
+                        System.out.println("Invalid input\n");
+                }
+            }catch (InputMismatchException e) {
+                System.out.println("Invalid input\n");
             }
         }
     }

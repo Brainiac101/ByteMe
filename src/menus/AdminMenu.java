@@ -9,6 +9,8 @@ import logistics.Order;
 import logistics.Status;
 import users.Admin;
 
+import java.util.InputMismatchException;
+
 public class AdminMenu extends Menu {
     private final Admin admin;
 
@@ -113,91 +115,97 @@ public class AdminMenu extends Menu {
         int availability;
         Category category;
         while (true) {
-            this.display();
-            choice = sc.nextInt();
-            sc.nextLine();
-            switch (choice) {
-                case 1:
-                    System.out.print("Enter item name: ");
-                    itemName = sc.nextLine();
-                    System.out.print("Enter item price: ");
-                    itemPrice = sc.nextInt();
-                    sc.nextLine();
-                    System.out.print("Enter item availability (inventory): ");
-                    availability = sc.nextInt();
-                    sc.nextLine();
-                    category = inputCategory();
-                    if (availability == 0 || itemPrice == 0 || itemName == null) System.out.println("Invalid input");
-                    else this.admin.addItem(itemName, itemPrice, category, availability);
-                    break;
-                case 2:
-                    System.out.println("• 1 for updating the price of an item");
-                    System.out.println("• 2 for updating the availability of an item");
-                    System.out.println("• 0 to return to menu");
-                    temp = sc.nextInt();
-                    sc.nextLine();
-                    switch (temp) {
-                        case 1:
-                            System.out.print("Enter item name: ");
-                            itemName = sc.nextLine();
-                            item = ItemList.getItemByName(itemName);
-                            if (item == null) {
-                                System.out.println("No such item\n");
-                                break;
-                            }
-                            System.out.print("Enter item price: ");
-                            itemPrice = sc.nextInt();
-                            this.admin.updateItemPrice(item, itemPrice);
-                            System.out.println("Item updated\n");
-                            break;
-                        case 2:
-                            System.out.print("Enter item name: ");
-                            itemName = sc.nextLine();
-                            item = ItemList.getItemByName(itemName);
-                            if (item == null) {
-                                System.out.println("No such item\n");
-                                break;
-                            }
-                            System.out.print("Enter item availability (inventory): ");
-                            availability = sc.nextInt();
-                            this.admin.updateItemAvailability(item, availability);
-                            System.out.println("Item updated\n");
-                            break;
-                        case 0:
-                            break;
-                        default:
+            try {
+                this.display();
+                choice = sc.nextInt();
+                sc.nextLine();
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter item name: ");
+                        itemName = sc.nextLine();
+                        System.out.print("Enter item price: ");
+                        itemPrice = sc.nextInt();
+                        sc.nextLine();
+                        System.out.print("Enter item availability (inventory): ");
+                        availability = sc.nextInt();
+                        sc.nextLine();
+                        category = inputCategory();
+                        if (availability == 0 || itemPrice == 0 || itemName == null)
                             System.out.println("Invalid input");
-                            break;
-                    }
-                    break;
-                case 3:
-                    System.out.print("Enter item name to remove: ");
-                    itemName = sc.nextLine();
-                    this.admin.deleteItem(itemName);
-                    break;
-                case 4:
-                    this.admin.viewPendingOrders();
-                    break;
-                case 5:
-                    System.out.print("Enter order ID to be updated: ");
-                    int ID = sc.nextInt();
-                    sc.nextLine();
-                    Status status = inputStatus();
-                    this.admin.updateOrderStatus(ID, status);
-                    break;
-                case 6:
-                    this.processRefunds();
-                    break;
-                case 7:
-                    this.admin.getReport();
-                    break;
-                case 0:
-                    this.logout();
-                    return;
-                default:
-                    System.out.println("Invalid input");
+                        else this.admin.addItem(itemName, itemPrice, category, availability);
+                        break;
+                    case 2:
+                        System.out.println("• 1 for updating the price of an item");
+                        System.out.println("• 2 for updating the availability of an item");
+                        System.out.println("• 0 to return to menu");
+                        temp = sc.nextInt();
+                        sc.nextLine();
+                        switch (temp) {
+                            case 1:
+                                System.out.print("Enter item name: ");
+                                itemName = sc.nextLine();
+                                item = ItemList.getItemByName(itemName);
+                                if (item == null) {
+                                    System.out.println("No such item\n");
+                                    break;
+                                }
+                                System.out.print("Enter item price: ");
+                                itemPrice = sc.nextInt();
+                                this.admin.updateItemPrice(item, itemPrice);
+                                System.out.println("Item updated\n");
+                                break;
+                            case 2:
+                                System.out.print("Enter item name: ");
+                                itemName = sc.nextLine();
+                                item = ItemList.getItemByName(itemName);
+                                if (item == null) {
+                                    System.out.println("No such item\n");
+                                    break;
+                                }
+                                System.out.print("Enter item availability (inventory): ");
+                                availability = sc.nextInt();
+                                this.admin.updateItemAvailability(item, availability);
+                                System.out.println("Item updated\n");
+                                break;
+                            case 0:
+                                break;
+                            default:
+                                System.out.println("Invalid input");
+                                break;
+                        }
+                        break;
+                    case 3:
+                        System.out.print("Enter item name to remove: ");
+                        itemName = sc.nextLine();
+                        this.admin.deleteItem(itemName);
+                        break;
+                    case 4:
+                        this.admin.viewPendingOrders();
+                        break;
+                    case 5:
+                        System.out.print("Enter order ID to be updated: ");
+                        int ID = sc.nextInt();
+                        sc.nextLine();
+                        Status status = inputStatus();
+                        this.admin.updateOrderStatus(ID, status);
+                        break;
+                    case 6:
+                        this.processRefunds();
+                        break;
+                    case 7:
+                        this.admin.getReport();
+                        break;
+                    case 0:
+                        this.logout();
+                        return;
+                    default:
+                        System.out.println("Invalid input\n");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input\n");
             }
         }
+
     }
 
     private void logout() {

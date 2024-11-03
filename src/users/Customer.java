@@ -31,12 +31,12 @@ public class Customer extends User {
 
     public void viewMenu() {
         List<Item> temp = ItemList.getItems();
-        if (temp != null) {
+        if (temp != null && !temp.isEmpty()) {
             for (Item item : temp) {
                 System.out.println(item);
                 System.out.println();
             }
-        } else System.out.println("No items found");
+        } else System.out.println("No items found\n");
     }
 
     public void searchByName(String name) {
@@ -45,11 +45,13 @@ public class Customer extends User {
             System.out.println(temp);
             System.out.println();
         }
-        else System.out.println("No Products with name " + name + " found");
+        else System.out.println("No Products with name " + name + " found\n");
     }
 
     public void searchByCategory(Category category) {
-        for (Item item : ItemList.getItemsByCategory(category)) {
+        List<Item> temp = ItemList.getItemsByCategory(category);
+        for (int i = 0; i < temp.size(); i++) {
+            Item item = temp.get(i);
             System.out.println(item);
             System.out.println();
         }
@@ -121,7 +123,7 @@ public class Customer extends User {
 
     public void viewStatus() {
         Order o = this.cart.getLastOrder();
-        if(o.getStatus() != Status.Cancelled || o.getStatus() != Status.Delivered) {
+        if(o != null && (o.getStatus() != Status.Cancelled || o.getStatus() != Status.Delivered)) {
             System.out.println(o);
             System.out.println();
         }

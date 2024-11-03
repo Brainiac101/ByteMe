@@ -69,13 +69,14 @@ public final class Cart {
     }
 
     public Order getLastOrder() {
-        return orders.getLast();
+        if (!orders.isEmpty()) return orders.getLast();
+        else return null;
     }
 
     public void cancelOrder() {
         Order order = getLastOrder();
-        if (order.getStatus() != Status.Delivered && order.getStatus() != Status.OrderReceived) {
-            System.out.println("Order cancellation not possible");
+        if (order == null || order.getStatus() != Status.Delivered && order.getStatus() != Status.OrderReceived) {
+            System.out.println("Order cancellation not possible\n");
             return;
         }
         for (Item i : order.getItems().keySet()) {
@@ -86,7 +87,7 @@ public final class Cart {
         order.setStatus(Status.Cancelled);
         OrderList.removeOrder(order.getId());
         if (order.isPaid()) DeniedOrders.addDeniedOrder(order);
-        System.out.println("Order Cancelled");
+        System.out.println("Order Cancelled\n");
     }
 
     public void addQuantity(Item item) {
@@ -134,6 +135,6 @@ public final class Cart {
         for(Item item : items.keySet()){
             temp.append("Name: ").append(item.getName()).append("\nPrice: ").append(item.getPrice()).append("\nCategory: ").append(item.getCategory()).append("\nQuantity: ").append(items.get(item)).append("\n");
         }
-        return "Item List:\n" + temp + "\nRequests: " + this.request + "\nOrder Value: " + this.price;
+        return "Item List:\n" + temp + "\nRequests: " + this.request + "\nOrder Value: " + this.price + "\n";
     }
 }
