@@ -4,7 +4,7 @@ import users.Customer;
 
 import java.util.HashMap;
 
-public class CustomerList {
+public final class CustomerList {
     private final static HashMap<String, Customer> customers = new HashMap<>();
 
     public static void addCustomer(Customer customer) {

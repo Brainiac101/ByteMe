@@ -75,7 +75,7 @@ public final class Cart {
 
     public void cancelOrder() {
         Order order = getLastOrder();
-        if (order == null || order.getStatus() != Status.Delivered && order.getStatus() != Status.OrderReceived) {
+        if (order == null || order.getStatus() != Status.Delivered || order.getStatus() != Status.Cancelled || order.getStatus() != Status.Denied) {
             System.out.println("Order cancellation not possible\n");
             return;
         }

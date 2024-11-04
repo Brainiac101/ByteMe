@@ -1,12 +1,12 @@
 package menus;
 
-import database.CustomerList;
-import logistics.Category;
-import users.VIP;
+import database.*;
+import logistics.*;
+import users.*;
 
 import java.util.InputMismatchException;
 
-public class VIPMenu extends CustomerMenu {
+public final class VIPMenu extends CustomerMenu {
     public VIPMenu(VIP customer) {
         super(customer);
     }

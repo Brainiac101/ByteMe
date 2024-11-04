@@ -1,17 +1,12 @@
 package menus;
 
-import database.CompletedOrders;
-import database.DeniedOrders;
-import database.ItemList;
-import logistics.Category;
-import logistics.Item;
-import logistics.Order;
-import logistics.Status;
+import database.*;
+import logistics.*;
 import users.Admin;
 
 import java.util.InputMismatchException;
 
-public class AdminMenu extends Menu {
+public final class AdminMenu extends Menu {
     private final Admin admin;
 
     public AdminMenu(Admin admin) {

@@ -1,9 +1,8 @@
 package menus;
 
-import database.CustomerList;
-import logistics.Category;
-import users.Customer;
-import users.VIP;
+import database.*;
+import logistics.*;
+import users.*;
 
 import java.util.InputMismatchException;
 
