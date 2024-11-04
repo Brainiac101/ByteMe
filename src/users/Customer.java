@@ -40,10 +40,12 @@ public class Customer extends User {
     }
 
     public void searchByName(String name) {
-        Item temp = ItemList.getItemByName(name);
-        if (temp != null) {
-            System.out.println(temp);
-            System.out.println();
+        List<Item> temp = ItemList.searchItems(name);
+        if (!temp.isEmpty()){
+            for(Item item : temp){
+                System.out.println(item);
+                System.out.println();
+            }
         }
         else System.out.println("No Products with name " + name + " found\n");
     }
