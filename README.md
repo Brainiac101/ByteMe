@@ -1,6 +1,18 @@
 # ByteMe
 A CLI based Java Application for ordering food and managing orders
 
+To run the code, you can try any of the following:
+
+- use any IDE like IntelliJ or Eclipse and run the Main file
+- open the terminal, go into the src directory of the project, and run
+```
+javac *.java
+```
+After the files have been compiled, run
+```
+java Main.java
+```
+
 ## Java Collections used
 
 ### List
