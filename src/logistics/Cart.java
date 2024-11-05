@@ -5,9 +5,7 @@ import database.ItemList;
 import database.OrderList;
 import users.Customer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public final class Cart {
     private final Customer user;
@@ -75,13 +73,17 @@ public final class Cart {
 
     public void cancelOrder() {
         Order order = getLastOrder();
-        if (order == null || order.getStatus() != Status.Delivered || order.getStatus() != Status.Cancelled || order.getStatus() != Status.Denied) {
+        if (order == null || order.getStatus() == Status.Delivered || order.getStatus() == Status.Cancelled || order.getStatus() == Status.Denied) {
             System.out.println("Order cancellation not possible\n");
             return;
         }
+        System.out.println(order.getItems());
+//        for (Item i : order.getItems().keySet()) {
         for (Item i : order.getItems().keySet()) {
-            i.setAvailability(i.getAvailability() + this.items.get(i));
-            ItemList.updateItem(i);
+            if (this.items.containsKey(i)) {
+                i.setAvailability(i.getAvailability() + this.items.get(i));
+                ItemList.updateItem(i);
+            }
         }
         orders.remove(order);
         order.setStatus(Status.Cancelled);

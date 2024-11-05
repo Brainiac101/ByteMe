@@ -170,6 +170,11 @@ public final class VIPMenu extends CustomerMenu {
                 }
             } catch(InputMismatchException e) {
                 System.out.println("Invalid input\n");
+                sc.nextLine();
+            } catch(Exception e){
+                System.out.println(e.getMessage());
+                logout();
+                return;
             }
         }
     }

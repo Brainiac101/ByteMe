@@ -16,6 +16,6 @@ public final class VIP extends Customer {
 
     @Override
     public void repeatOrder(int index) {
-        this.cart.placeOrder(true, index);
+        this.cart.placeOrder(true, index - 1);
     }
 }

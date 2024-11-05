@@ -6,7 +6,9 @@ import java.util.*;
 
 public final class OrderList {
     private static final PriorityQueue<Order> orderList = new PriorityQueue<>((o1, o2) -> {
-        if (o1.getPriority() != o2.getPriority()) return Integer.compare(o2.getPriority(), o1.getPriority());
+        if (o1.getPriority() != o2.getPriority()) {
+            return Integer.compare(o2.getPriority(), o1.getPriority());
+        }
         return Integer.compare(o1.getId(), o2.getId());
     });
     private static int ctr = 0;

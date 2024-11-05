@@ -146,6 +146,7 @@ public final class AdminMenu extends Menu {
                                 }
                                 System.out.print("Enter item price: ");
                                 itemPrice = sc.nextInt();
+                                sc.nextLine();
                                 this.admin.updateItemPrice(item, itemPrice);
                                 System.out.println("Item updated\n");
                                 break;
@@ -159,6 +160,7 @@ public final class AdminMenu extends Menu {
                                 }
                                 System.out.print("Enter item availability (inventory): ");
                                 availability = sc.nextInt();
+                                sc.nextLine();
                                 this.admin.updateItemAvailability(item, availability);
                                 System.out.println("Item updated\n");
                                 break;
@@ -198,6 +200,11 @@ public final class AdminMenu extends Menu {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input\n");
+                sc.nextLine();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                logout();
+                return;
             }
         }
 

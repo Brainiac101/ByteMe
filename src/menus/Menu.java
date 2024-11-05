@@ -42,8 +42,12 @@ public class Menu {
                     default:
                         System.out.println("Invalid input\n");
                 }
-            }catch (InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input\n");
+                sc.nextLine();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return;
             }
         }
     }
